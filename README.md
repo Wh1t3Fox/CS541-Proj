@@ -1,1 +1,1 @@
-[[project_handout.pdf]]
+![Projct Handout](project_handout.pdf)
