@@ -2,3 +2,10 @@
 <br />
 [Class Slides](https://drive.google.com/folderview?id=0Bx2RUcQJmFxnZzdFeVZreldEN1U&usp=sharing)
 
+Objects
+- Tables
+- Indexes
+- Sequences
+- Views
+
+
