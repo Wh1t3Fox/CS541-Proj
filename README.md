@@ -10,4 +10,13 @@ Objects
 - Sequences
 - Views
 
+###Strict Policy
+You are allowed to
+- Read Down
+- Write Up
 
+###Low-Watermark Object
+Allow writing to all object but if the integrity level is higher, then lower the integrity level to match the users.
+
+###Ring Policy
+Subjects can read all objects but only write to one with lower integrity than themselves
