@@ -1,9 +1,9 @@
-
 rem CREATE TABLE Teachers
 CREATE TABLE Teachers(
     t_id    NUMBER(5),
     t_name  VARCHAR(30),
     phone   CHAR(12),
+    t_pwrd  CHAR(4),
     CONSTRAINT pk_teachers PRIMARY KEY(t_id)
 );
 
@@ -11,6 +11,8 @@ rem CREATE TABLE Students
 CREATE TABLE Students(
     s_id    NUMBER(5),
     s_name  VARCHAR(30),
+    gpa     DECIMAL(3,2),
+    s_pwrd  CHAR(4),
     CONSTRAINT pk_students PRIMARY KEY(s_id)
 );
 
