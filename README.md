@@ -11,9 +11,8 @@ Objects
 - Views
 
 ###Strict Policy
-You are allowed to
-- Read Down
-- Write Up
+- No Write Up
+- No Read Down
 
 ###Low-Watermark Object
 Allow writing to all object but if the integrity level is higher, then lower the integrity level to match the users.
