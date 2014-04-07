@@ -32,3 +32,10 @@ CREATE TABLE ClassList(
     CONSTRAINT fk_classlist_class FOREIGN KEY(c_id) REFERENCES Classes(c_id),
     CONSTRAINT fk_classlist_stud FOREIGN KEY(s_id) REFERENCES Students(s_id)
 );
+
+rem CREATE TABLE Integrity
+CREATE TABLE Integrity(
+    table_name          VARCHAR(5),
+    integrity_value     NUMBER(5),
+    CONSTRAINT pk_integrity PRIMARY KEY(table_name),
+);
