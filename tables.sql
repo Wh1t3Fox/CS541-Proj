@@ -2,7 +2,7 @@ rem CREATE TABLE Teachers
 CREATE TABLE Teachers(
     t_id    NUMBER(5),
     t_name  VARCHAR(30),
-    phone   CHAR(12),
+    office   CHAR(12),
     t_pwrd  CHAR(4),
     CONSTRAINT pk_teachers PRIMARY KEY(t_id)
 );
@@ -31,4 +31,11 @@ CREATE TABLE ClassList(
     CONSTRAINT pk_classlist PRIMARY KEY(c_id, s_id),
     CONSTRAINT fk_classlist_class FOREIGN KEY(c_id) REFERENCES Classes(c_id),
     CONSTRAINT fk_classlist_stud FOREIGN KEY(s_id) REFERENCES Students(s_id)
+);
+
+rem CREATE TABLE Integrity
+CREATE TABLE Integrity(
+    table_name          VARCHAR(5),
+    integrity_value     NUMBER(5),
+    CONSTRAINT pk_integrity PRIMARY KEY(table_name),
 );
