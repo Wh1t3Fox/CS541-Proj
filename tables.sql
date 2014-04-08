@@ -2,8 +2,8 @@ rem CREATE TABLE Teachers
 CREATE TABLE Teachers(
     t_id    NUMBER(5),
     t_name  VARCHAR(30),
-    office   CHAR(12),
-    t_pwrd  CHAR(4),
+    office  VARCHAR(30),
+    t_pwrd  VARCHAR(64),
     CONSTRAINT pk_teachers PRIMARY KEY(t_id)
 );
 
@@ -12,7 +12,7 @@ CREATE TABLE Students(
     s_id    NUMBER(5),
     s_name  VARCHAR(30),
     gpa     DECIMAL(3,2),
-    s_pwrd  CHAR(4),
+    s_pwrd  VARCHAR(64),
     CONSTRAINT pk_students PRIMARY KEY(s_id)
 );
 
@@ -35,7 +35,7 @@ CREATE TABLE ClassList(
 
 rem CREATE TABLE Integrity
 CREATE TABLE Integrity(
-    table_name          VARCHAR(5),
+    table_name          VARCHAR(15),
     integrity_value     NUMBER(5),
     CONSTRAINT pk_integrity PRIMARY KEY(table_name),
 );
