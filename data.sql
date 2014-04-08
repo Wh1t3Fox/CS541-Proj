@@ -3,9 +3,9 @@ Drop table TEACHERS cascade constraints;
 Drop table CLASSES cascade constraints;
 Drop table ClassList cascade constraints;
 
-CREATE TABLE Students(s_id NUMBER(5), s_name VARCHAR(30), gpa DECIMAL(3,2), s_pwrd VARCHAR(10), integrity_value NUMBER (1), CONSTRAINT pk_students PRIMARY KEY(s_id), CONSTRAINT fk_students_integrity FOREIGN KEY(integrity_value) REFERENCES Integrity(integrity_value));
+CREATE TABLE Students(s_id NUMBER(5), s_name VARCHAR(30), gpa DECIMAL(3,2), s_pwrd VARCHAR(64), integrity_value NUMBER (1), CONSTRAINT pk_students PRIMARY KEY(s_id), CONSTRAINT fk_students_integrity FOREIGN KEY(integrity_value) REFERENCES Integrity(integrity_value));
 
-CREATE TABLE Teachers(t_id NUMBER(5),t_name VARCHAR(30),office CHAR(12),t_pwrd VARCHAR(10),integrity_value NUMBER (1), CONSTRAINT pk_teachers PRIMARY KEY(t_id), CONSTRAINT fk_teachers_integrity FOREIGN KEY(integrity_value) REFERENCES Integrity(integrity_value));
+CREATE TABLE Teachers(t_id NUMBER(5),t_name VARCHAR(30),office VARCHAR(12),t_pwrd VARCHAR(64),integrity_value NUMBER (1), CONSTRAINT pk_teachers PRIMARY KEY(t_id), CONSTRAINT fk_teachers_integrity FOREIGN KEY(integrity_value) REFERENCES Integrity(integrity_value));
 
 CREATE TABLE Classes(c_id NUMBER(5),t_id NUMBER(5),subject VARCHAR(30),CONSTRAINT fk_classes FOREIGN KEY(t_id) REFERENCES Teachers(t_id));
 
