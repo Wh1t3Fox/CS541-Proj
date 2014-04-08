@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Scanner;
+import java.security.*;
 
 public class Main {
 	
@@ -13,7 +14,7 @@ public class Main {
 	private static Scanner sc;
 	private static Connection conn;
 	private static Properties props;
-	private static final String url = "jdbc:oracle:thin:@claros.cs.purdue.edu:1524:strep";;
+	private static final String url = "jdbc:oracle:thin:@claros.cs.purdue.edu:1524:strep";
 	private static PreparedStatement preState;
 	
 	public static void main(String args[]) throws SQLException, ClassNotFoundException {
@@ -50,39 +51,36 @@ public class Main {
 	    try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			props = new Properties();
-		    props.setProperty("user", "USERNAME");
-		    props.setProperty("password", "PASSWORD");
+		    props.setProperty("user", "");
+		    props.setProperty("password", "");
 		     
-		    conn = DriverManager.getConnection(url,props);
+		    conn = DriverManager.getConnection(url,props);    	    
 		    
 		    /*
-	        String insert = "INSERT INTO students (s_id, s_name, gpa, s_pwrd) VALUES (?,?,?,?)";
-	        PreparedStatement preStatement = conn.prepareStatement(insert);
-	        preStatement.setInt(1, 6);
-	        preStatement.setString(2, "James");
-	        preStatement.setFloat(3, (float) 2.34);
-	        preStatement.setString(4, "abc");
-	        preStatement.executeUpdate();
-	       	*/	    
+		    String insert = "INSERT INTO students (s_id, s_name, gpa, s_pwrd) VALUES (?,?,?,?)";
+		    PreparedStatement preStatement = conn.prepareStatement(insert);
+		    preStatement.setInt(1, 6);
+		    preStatement.setString(2, "James");
+		    preStatement.setFloat(3, (float) 2.34);
+		    preStatement.setString(4, "abc");
+		    preStatement.executeUpdate();
+		    */
 		    
-	    	String sql ="SELECT * FROM Students WHERE s_id = ? AND s_pwrd = ?";
+		    String sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ?";
         	preState = conn.prepareStatement(sql);
         	preState.setInt(1, input_sid);
         	preState.setString(2, input_passwd);
         
-        	ResultSet result = preState.executeQuery();
-        	boolean success = false;       	
+        	ResultSet result = preState.executeQuery();       	
         	
-        	while(result.next()){
+        	if(result.next()){
         		//System.out.println(result.getFetchSize());
         		//System.out.println(result.getString("s_name") + " : " + result.getString("s_pwrd"));
         		if(result.getString("s_name") != null){
-        			success = true;
         			System.out.println("Logged in!");
         		}
         	}
-        	
-        	if(!success){
+        	else{
         		System.out.println("Invalid Login!");
         	}
         	
@@ -95,5 +93,6 @@ public class Main {
 	        e.printStackTrace();
 	    }
 	}
-
 }
+
+
