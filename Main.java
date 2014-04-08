@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 import java.util.Scanner;
 import java.security.MessageDigest;
@@ -101,7 +102,7 @@ public class Main {
 	}
 	
 	public static void insertData(Connection conn){
-		PreparedStatement preStatement;
+		Statement stmt = null;
 		try{
 			String createStudent = "CREATE TABLE Students("
 										+ "s_id NUMBER(5), "
@@ -112,6 +113,7 @@ public class Main {
 										+ "CONSTRAINT pk_students PRIMARY KEY(s_id), "
 										+ "CONSTRAINT fk_students_integrity FOREIGN KEY(integrity_value) REFERENCES Integrity(integrity_value))";
 			
+			
 			String createTeacher = "CREATE TABLE Teachers("
 										+ "t_id NUMBER(5),"
 										+ "t_name VARCHAR(30),"
@@ -121,11 +123,13 @@ public class Main {
 										+ "CONSTRAINT pk_teachers PRIMARY KEY(t_id), "
 										+ "CONSTRAINT fk_teachers_integrity FOREIGN KEY(integrity_value) REFERENCES Integrity(integrity_value))";
 			
+			
 			String createClasList = "CREATE TABLE Classes("
 										+ "c_id NUMBER(5),"
 										+ "t_id NUMBER(5),"
 										+ "subject VARCHAR(30),"
 										+ "CONSTRAINT fk_classes FOREIGN KEY(t_id) REFERENCES Teachers(t_id))";
+			
 			
 			String creatClasses = "CREATE TABLE ClassList("
 										+ "c_id NUMBER(5),"
@@ -134,17 +138,78 @@ public class Main {
 										+ "CONSTRAINT fk_classlist_class FOREIGN KEY(c_id) REFERENCES Classes(c_id),"
 										+ "CONSTRAINT fk_classlist_stud FOREIGN KEY(s_id) REFERENCES Students(s_id))";
 			
+			
 			String createIntegrity = "CREATE TABLE Integrity("
 										+ "table_name VARCHAR(10),"
 										+ "integrity_value NUMBER(1), "
 										+ "CONSTRAINT pk_integrity PRIMARY KEY(table_name))";
 			
-			String query = "INSERT INTO students "
-							+ "(s_id, s_name, gpa, s_pwrd) "
-							+ "VALUES (7,'Bill',3.50, '"+passHash("password")+"')";
-					
-			preStatement = conn.prepareStatement(query);
-			preStatement.executeUpdate();
+			
+			String insert = "insert into STUDENTS values (0418,'S.Jack',3.5,'"+passHash("jack")+"', 5)";
+			String insert1 = "insert into STUDENTS values (0671,'A.Smith',2.9,'"+passHash("smith")+"', 5)";
+			String insert2 = "insert into STUDENTS values (1234,'T.Banks',4.0,'"+passHash("banks")+"', 5)";
+			String insert3 = "insert into STUDENTS values (3726,'M.Lee',3.2,'"+passHash("lee")+"', 5)";
+			String insert4 = "insert into STUDENTS values (4829,'J.Bale',3.0,'"+passHash("bale")+"', 5)";
+
+			String insert5 = "insert into TEACHERS values (101,'S.Layton','L1', '"+passHash("layton")+"', 4)";
+			String insert6 = "insert into TEACHERS values (102,'B.Jungles','L2', '"+passHash("jungles")+"', 4)";
+			String insert7 = "insert into TEACHERS values (103,'N.Guzaldo','L3', '"+passHash("guzaldo")+"', 4)";
+			String insert8 = "insert into TEACHERS values (104,'S.Boling','L4', '"+passHash("boling")+"', 4)";
+			String insert9 = "insert into TEACHERS values (105,'G.Mason','L5', '"+passHash("mason")+"', 4)";
+
+
+			String insert10 = "insert into CLASSES values (100, 101,'Math')";
+			String insert11 = "insert into CLASSES values (200, 102,'English')";
+			String insert12 = "insert into CLASSES values (300, 103,'History')";
+			String insert13 = "insert into CLASSES values (400, 104,'Spanish')";
+			String insert14 = "insert into CLASSES values (500, 105,'Science')";
+
+
+			String insert15 = "insert into ClassList values (100, 0418)";
+			String insert16 = "insert into ClassList values (100, 1234)";
+			String insert17 = "insert into ClassList values (102, 0418)";
+			String insert18 = "insert into ClassList values (103, 1234)";
+			String insert19 = "insert into ClassList values (104, 0671)";
+			String insert20 = "insert into ClassList values (102, 1234)";
+			String insert21 = "insert into ClassList values (101, 3726)";
+			String insert22 = "insert into ClassList values (105, 4829)";
+
+			String insert23 = "insert into Integrity values (ClassList, 4)";
+			String insert24 = "insert into Integrity values (CLASSES, 5)";
+			String insert25 = "insert into Integrity values (TEACHERS, 5)";
+			String insert26 = "insert into Integrity values (STUDENTS, 4)";
+			
+			stmt.executeQuery(createStudent);
+			stmt.executeQuery(createTeacher);
+			stmt.executeQuery(createClasList);
+			stmt.executeQuery(creatClasses);
+			stmt.executeQuery(createIntegrity);
+			stmt.executeQuery(insert);
+			stmt.executeQuery(insert2);
+			stmt.executeQuery(insert3);
+			stmt.executeQuery(insert4);
+			stmt.executeQuery(insert5);
+			stmt.executeQuery(insert6);
+			stmt.executeQuery(insert7);
+			stmt.executeQuery(insert8);
+			stmt.executeQuery(insert9);
+			stmt.executeQuery(insert10);
+			stmt.executeQuery(insert11);
+			stmt.executeQuery(insert12);
+			stmt.executeQuery(insert13);
+			stmt.executeQuery(insert14);
+			stmt.executeQuery(insert15);
+			stmt.executeQuery(insert16);
+			stmt.executeQuery(insert17);
+			stmt.executeQuery(insert18);
+			stmt.executeQuery(insert19);
+			stmt.executeQuery(insert20);
+			stmt.executeQuery(insert21);
+			stmt.executeQuery(insert22);
+			stmt.executeQuery(insert23);
+			stmt.executeQuery(insert24);
+			stmt.executeQuery(insert25);
+			stmt.executeQuery(insert26);
 			
 		}catch(SQLException se){
 	    	se.printStackTrace();
