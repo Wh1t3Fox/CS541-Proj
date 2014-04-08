@@ -59,15 +59,8 @@ public class Main {
 		     
 		    conn = DriverManager.getConnection(url,props);    	    
 		    
-		    /*
-		    String insert = "INSERT INTO students (s_id, s_name, gpa, s_pwrd) VALUES (?,?,?,?)";
-		    PreparedStatement preStatement = conn.prepareStatement(insert);
-		    preStatement.setInt(1, 6);
-		    preStatement.setString(2, "James");
-		    preStatement.setFloat(3, (float) 2.34);
-		    preStatement.setString(4, passHash("abc"));
-		    preStatement.executeUpdate();
-		    */
+		    
+		    //insertData(conn);
 		    
 		    String sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ?";
         	preState = conn.prepareStatement(sql);
@@ -107,6 +100,23 @@ public class Main {
 		return hash.toString();
 	}
 	
+	public static void insertData(Connection conn){
+		PreparedStatement preStatement;
+		try{
+			
+			String query = "INSERT INTO students "
+							+ "(s_id, s_name, gpa, s_pwrd) "
+							+ "VALUES (7,'Bill',3.50, '"+passHash("password")+"')";
+					
+			preStatement = conn.prepareStatement(query);
+			preStatement.executeUpdate();
+			
+		}catch(SQLException se){
+	    	se.printStackTrace();
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+	}
 }
 
 
