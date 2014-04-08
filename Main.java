@@ -74,11 +74,7 @@ public class Main {
         	ResultSet result = preState.executeQuery();       	
         	
         	if(result.next()){
-        		//System.out.println(result.getFetchSize());
-        		//System.out.println(result.getString("s_name") + " : " + result.getString("s_pwrd"));
-        		if(result.getString("s_name") != null){
-        			System.out.println("Logged in!");
-        		}
+        	    System.out.println("Logged in!");
         	}
         	else{
         		System.out.println("Invalid Login!");
