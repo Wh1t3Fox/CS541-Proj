@@ -63,7 +63,7 @@ public class Main {
 		    
 		    //insertData(conn);
 		    
-		    String sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ?";
+		    String sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ? AND ROWNUM < 2";
         	preState = conn.prepareStatement(sql);
         	preState.setInt(1, input_sid);
         	preState.setString(2, passHash(input_passwd));
