@@ -1,3 +1,4 @@
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -5,25 +6,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Scanner;
-import java.security.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Main {
 	
-	private static int input_sid;
-	private static String input_passwd, user_type;
-	private static Scanner sc;
-	private static Connection conn;
-	private static Properties props;
-	private static final String url = "jdbc:oracle:thin:@claros.cs.purdue.edu:1524:strep";
-	private static PreparedStatement preState;
 	
-	public static void main(String args[]) throws SQLException, ClassNotFoundException {
+	public static void main(String args[]) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException {
 	
-		sc = new Scanner( System.in );
+		int input_sid = 0;
+		String input_passwd = "", user_type = "";
+		Connection conn;
+		Properties props;
+		final String url = "jdbc:oracle:thin:@claros.cs.purdue.edu:1524:strep";
+		PreparedStatement preState;
+		
+		Scanner sc = new Scanner( System.in );
 	    
 	    System.out.println("1.Student\n2.Teacher\nQ.Exit");
 	    user_type = sc.next();
-	    
+	    	    
 	    switch(user_type){
 	    	case "1":
 	    		System.out.print("Enter student ID: ");
@@ -46,6 +48,7 @@ public class Main {
 	    		
 	    	default:
 	    		System.out.println("Invalid Choice");
+	    		System.exit(0);
 	    		break;
 	    }
 	    try{
@@ -74,7 +77,7 @@ public class Main {
         	ResultSet result = preState.executeQuery();       	
         	
         	if(result.next()){
-        	    System.out.println("Logged in!");
+        		System.out.println("Logged in!");
         	}
         	else{
         		System.out.println("Invalid Login!");
@@ -89,6 +92,21 @@ public class Main {
 	        e.printStackTrace();
 	    }
 	}
+	
+	public static String passHash(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		digest.reset();
+		byte[] hash_bytes = digest.digest(password.getBytes("UTF-8"));
+		
+		StringBuilder hash = new StringBuilder();
+		
+		for(int i=0; i<hash_bytes.length; i++){
+			hash.append(Integer.toString((hash_bytes[i] & 0xff) + 0x100, 16).substring(1));
+		}
+		
+		return hash.toString();
+	}
+	
 }
 
 
