@@ -179,6 +179,7 @@ public class Main {
 			String insert25 = "insert into Integrity values (TEACHERS, 5)";
 			String insert26 = "insert into Integrity values (STUDENTS, 4)";
 			
+			stmt = conn.createStatement();
 			stmt.executeQuery(createStudent);
 			stmt.executeQuery(createTeacher);
 			stmt.executeQuery(createClasList);
@@ -211,6 +212,29 @@ public class Main {
 			stmt.executeQuery(insert25);
 			stmt.executeQuery(insert26);
 			
+		}catch(SQLException se){
+	    	se.printStackTrace();
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+	}
+	
+	public static void removeData(Connection conn){
+		Statement stmt = null;
+		
+		try{
+			String insert = "Drop table STUDENTS cascade constraints";
+			String insert1 = "Drop table TEACHERS cascade constraints";
+			String insert2 = "Drop table CLASSES cascade constraints";
+			String insert3 = "Drop table ClassList cascade constraints";
+			String insert4 = "Drop table INTEGRITY cascade constraints";
+			
+			stmt = conn.createStatement();
+			stmt.executeQuery(insert);
+			stmt.executeQuery(insert2);
+			stmt.executeQuery(insert3);
+			stmt.executeQuery(insert4);
+		
 		}catch(SQLException se){
 	    	se.printStackTrace();
 	    }catch(Exception e){
