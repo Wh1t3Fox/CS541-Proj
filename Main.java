@@ -103,6 +103,41 @@ public class Main {
 	public static void insertData(Connection conn){
 		PreparedStatement preStatement;
 		try{
+			String createStudent = "CREATE TABLE Students("
+										+ "s_id NUMBER(5), "
+										+ "s_name VARCHAR(30), "
+										+ "gpa DECIMAL(3,2), "
+										+ "s_pwrd VARCHAR(64), "
+										+ "integrity_value NUMBER (1), "
+										+ "CONSTRAINT pk_students PRIMARY KEY(s_id), "
+										+ "CONSTRAINT fk_students_integrity FOREIGN KEY(integrity_value) REFERENCES Integrity(integrity_value))";
+			
+			String createTeacher = "CREATE TABLE Teachers("
+										+ "t_id NUMBER(5),"
+										+ "t_name VARCHAR(30),"
+										+ "office VARCHAR(12),"
+										+ "t_pwrd VARCHAR(64),"
+										+ "integrity_value NUMBER (1), "
+										+ "CONSTRAINT pk_teachers PRIMARY KEY(t_id), "
+										+ "CONSTRAINT fk_teachers_integrity FOREIGN KEY(integrity_value) REFERENCES Integrity(integrity_value))";
+			
+			String createClasList = "CREATE TABLE Classes("
+										+ "c_id NUMBER(5),"
+										+ "t_id NUMBER(5),"
+										+ "subject VARCHAR(30),"
+										+ "CONSTRAINT fk_classes FOREIGN KEY(t_id) REFERENCES Teachers(t_id))";
+			
+			String creatClasses = "CREATE TABLE ClassList("
+										+ "c_id NUMBER(5),"
+										+ "s_id NUMBER(5),"
+										+ "CONSTRAINT pk_classlist PRIMARY KEY(c_id, s_id),"
+										+ "CONSTRAINT fk_classlist_class FOREIGN KEY(c_id) REFERENCES Classes(c_id),"
+										+ "CONSTRAINT fk_classlist_stud FOREIGN KEY(s_id) REFERENCES Students(s_id))";
+			
+			String createIntegrity = "CREATE TABLE Integrity("
+										+ "table_name VARCHAR(10),"
+										+ "integrity_value NUMBER(1), "
+										+ "CONSTRAINT pk_integrity PRIMARY KEY(table_name))";
 			
 			String query = "INSERT INTO students "
 							+ "(s_id, s_name, gpa, s_pwrd) "
