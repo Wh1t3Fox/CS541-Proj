@@ -65,14 +65,14 @@ public class Main {
 		    preStatement.setInt(1, 6);
 		    preStatement.setString(2, "James");
 		    preStatement.setFloat(3, (float) 2.34);
-		    preStatement.setString(4, "abc");
+		    preStatement.setString(4, passHash("abc"));
 		    preStatement.executeUpdate();
 		    */
 		    
 		    String sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ?";
         	preState = conn.prepareStatement(sql);
         	preState.setInt(1, input_sid);
-        	preState.setString(2, input_passwd);
+        	preState.setString(2, passHash(input_passwd));
         
         	ResultSet result = preState.executeQuery();       	
         	
