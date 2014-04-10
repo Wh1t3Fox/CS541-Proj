@@ -55,8 +55,8 @@ public class Main {
 	    try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			props = new Properties();
-		    props.setProperty("user", "west1");
-		    props.setProperty("password", "iIXeLSkV");
+		    props.setProperty("user", "");
+		    props.setProperty("password", "");
 		     
 		    conn = DriverManager.getConnection(url,props);    	    
 		    
