@@ -14,6 +14,7 @@ public class Main {
 	
 	private static Connection conn;
 	private static String input_sid, user_type;
+	private static int integrityValue = 0;
 	private static final String BibaMode = "Strict";
 	
 	public static void main(String args[]) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -67,10 +68,10 @@ public class Main {
 		    
 		    String sql = "";
 		    if(user_type.equals("1")){
-		    	sql ="SELECT s_name,s_pwrd,S.integrity_value FROM Students as S,INTEGRITY as I WHERE s_id = ? AND S.integrity_value = I.integrity_value AND I.identity = S.s_id";
+		    	sql ="SELECT s_name, s_pwrd, integrity_value FROM Students WHERE s_id = ?";
 		    }
 		    else{
-		    	sql ="SELECT t_name,t_pwrd,integrity_value FROM Teachers as T, INTEGRITY as I WHERE t_id = ? AND T.integrity_value = I.integrity_value AND I.identity = T.t_id";
+		    	sql ="SELECT t_name,t_pwrd,integrity_value FROM Teachers WHERE t_id = ?";
 		    }
 		    
         	preState = conn.prepareStatement(sql);
@@ -79,15 +80,14 @@ public class Main {
         	ResultSet result = preState.executeQuery();       	
         	
         	if(result.next()){
-        		String name, passwd, integrityValue;
+        		String name, passwd;
         		
-        		name = result.getString(0);
-        		passwd = result.getString(1);
-        		integrityValue = result.getString(2);
+        		name = result.getString(1);
+        		passwd = result.getString(2);
+        		integrityValue = result.getInt(3);
         		
         		
-        		System.out.println("NAME: " + name + " PASS: " + " INTEG: " + integrityValue);
-        		
+        		        		
         		if(passwd.equals(passHash(input_passwd))){
         			authenticatedUser(name);
         		}
