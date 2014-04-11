@@ -67,26 +67,32 @@ public class Main {
 		    
 		    String sql = "";
 		    if(user_type.equals("1")){
-		    	sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ? AND ROWNUM < 2";
+		    	sql ="SELECT s_name,s_pwrd,S.integrity_value FROM Students as S,INTEGRITY as I WHERE s_id = ? AND S.integrity_value = I.integrity_value AND I.identity = S.s_id";
 		    }
 		    else{
-		    	sql ="SELECT t_name FROM Teachers WHERE t_id = ? AND t_pwrd = ? AND ROWNUM < 2";
+		    	sql ="SELECT t_name,t_pwrd,integrity_value FROM Teachers as T, INTEGRITY as I WHERE t_id = ? AND T.integrity_value = I.integrity_value AND I.identity = T.t_id";
 		    }
 		    
         	preState = conn.prepareStatement(sql);
         	preState.setString(1, input_sid);
-        	preState.setString(2, passHash(input_passwd));
         
         	ResultSet result = preState.executeQuery();       	
         	
         	if(result.next()){
-        		String name;
-        		try{
-        			name = result.getString("s_name");
-        		}catch(Exception e){
-        			name = result.getString("t_name");
+        		String name, passwd, integrityValue;
+        		
+        		name = result.getString(0);
+        		passwd = result.getString(1);
+        		integrityValue = result.getString(2);
+        		
+        		
+        		System.out.println("NAME: " + name + " PASS: " + " INTEG: " + integrityValue);
+        		
+        		if(passwd.equals(passHash(input_passwd))){
+        			authenticatedUser(name);
         		}
-        		authenticatedUser(name);
+        	
+        		
         	}
         	else{
         		System.out.println("Invalid Login!");
@@ -104,7 +110,7 @@ public class Main {
 	}
 	
 	public static void authenticatedUser(String name){
-		String command;
+		String command, tableName;
 		System.out.println("Hello, " + name);
 		
 		while(true){
@@ -113,6 +119,15 @@ public class Main {
 				System.out.println("INVALID COMMAND");
 				command = actionMenu();
 			}
+			
+			tableName = tableMenu();
+			if(tableName.equals("INVALID")){
+				System.out.println("INVALID COMMAND");
+				command = tableMenu();
+			}
+			
+			
+			
 		}
 			
 		
@@ -120,14 +135,16 @@ public class Main {
 	
 	
 	public static String actionMenu(){
-		String command = "";
+		String command = "", tableAttribute = "";
 		Scanner sc = new Scanner( System.in );
 		System.out.println("Choose Your Action:\n1. Select\n2. Insert\n3. Update");
 		command = sc.next();
 		
 		switch(command){
 			case "1":
-				return "SELECT";
+				System.out.print("What do you want to select? (Ex: *, s_name, t_name): ");
+				tableAttribute = sc.next();
+				return "SELECT " + tableAttribute;
 			case "2":
 				return "INSERT";
 			case "3":
@@ -137,7 +154,25 @@ public class Main {
 		}
 	}
 	
-	
+	public static String tableMenu(){
+		String command = "";
+		Scanner sc = new Scanner( System.in );
+		System.out.println("Choose Your Action:\n1. Teachers\n2. Students\n3. Classes\n4. Classlist");
+		command = sc.next();
+		
+		switch(command){
+			case "1":
+				return "TEACHERS";
+			case "2":
+				return "STUDENTS";
+			case "3":
+				return "CLASSES";
+			case "4":
+				return "CLASSLIST";
+			default:
+				return "INVALID";
+		}
+	}
 	
 	public static String passHash(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException{
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
