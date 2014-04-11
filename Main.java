@@ -167,10 +167,28 @@ public class Main {
 			}
 			
 			System.out.println("Final Query: " + query);
+			//Select Statements aka Reading
 			if(query.contains("SELECT")){
-				//Reading Data
+				//If using Ring Policy
+				if(BibaMode.equals("Ring")){
+					//Allow Reading to all Data
+				
+				//Strict and Watermark Policy
+				}else{
+					//Only allow reading with integrity = or >
+					
+				}
+			//Insert and Update Statements aka Writing
 			}else{
-				//Writing Data
+				//Watermark Policy
+				if(BibaMode.equals("Watermark")){
+					//Write to all but lower integrity if writing up
+					
+				//Strict and Ring policy
+				}else{
+					//Only allow writing down
+					
+				}
 			}
 			
 		}
