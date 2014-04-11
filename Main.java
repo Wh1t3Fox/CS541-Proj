@@ -61,18 +61,9 @@ public class Main {
 		    props.setProperty("password", "");
 		     
 		    conn = DriverManager.getConnection(url,props);
-		    /*
-		    try{
-		    	removeData();
-		    }catch(Exception e){
-		    	System.out.println("No Data to Remove");
-		    }
-		    try{
-		    	insertData();
-		    }catch(Exception e){
-		    	System.out.println("Data  already exists");
-		    }
-		    */
+		    
+		    //removeData();
+		    //insertData();
 		    
 		    String sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ? AND ROWNUM < 2";
         	preState = conn.prepareStatement(sql);
@@ -203,10 +194,8 @@ public class Main {
 			stmt.execute("insert into ClassList values (101, 3726)");
 			stmt.execute("insert into ClassList values (105, 4829)");
 		
-		}catch(SQLException se){
-	    	se.printStackTrace();
-	    }catch(Exception e){
-	        e.printStackTrace();
+		}catch(Exception e){
+	    	System.out.println("Data  already exists");
 	    }
 	}
 	
@@ -221,10 +210,8 @@ public class Main {
 			stmt.executeQuery("Drop table CLASSES cascade constraints");
 			stmt.executeQuery("Drop table ClassList cascade constraints");
 		
-		}catch(SQLException se){
-	    	se.printStackTrace();
-	    }catch(Exception e){
-	        e.printStackTrace();
+		}catch(Exception e){
+	    	System.out.println("No Data to Remove");
 	    }
 	}
 }
