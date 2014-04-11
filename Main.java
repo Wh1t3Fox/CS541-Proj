@@ -65,7 +65,14 @@ public class Main {
 		    //removeData();
 		    //insertData();
 		    
-		    String sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ? AND ROWNUM < 2";
+		    String sql = "";
+		    if(user_type.equals("1")){
+		    	sql ="SELECT s_name FROM Students WHERE s_id = ? AND s_pwrd = ? AND ROWNUM < 2";
+		    }
+		    else{
+		    	sql ="SELECT t_name FROM Teachers WHERE t_id = ? AND t_pwrd = ? AND ROWNUM < 2";
+		    }
+		    
         	preState = conn.prepareStatement(sql);
         	preState.setString(1, input_sid);
         	preState.setString(2, passHash(input_passwd));
