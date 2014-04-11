@@ -13,14 +13,16 @@ import java.security.NoSuchAlgorithmException;
 public class Main {
 	
 	private static Connection conn;
+	private static String input_sid, user_type;
 	
 	public static void main(String args[]) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException {
 	
-		String input_sid = "", input_passwd = "", user_type = "";
+		String input_passwd = "";
 		Properties props;
 		final String url = "jdbc:oracle:thin:@claros.cs.purdue.edu:1524:strep";
 		PreparedStatement preState;
 		
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner( System.in );
 	    
 	    System.out.println("1.Student\n2.Teacher\nQ.Exit");
@@ -69,10 +71,11 @@ public class Main {
         	ResultSet result = preState.executeQuery();       	
         	
         	if(result.next()){
-        		System.out.println("Logged in!");
+        		authenticatedUser(result.getString("s_name"));
         	}
         	else{
         		System.out.println("Invalid Login!");
+        		System.exit(0);
         	}
         	
         	result.close();
@@ -83,6 +86,10 @@ public class Main {
 	    }catch(Exception e){
 	        e.printStackTrace();
 	    }
+	}
+	
+	public static void authenticatedUser(String name){
+		System.out.println("Hello, " + name);
 	}
 	
 	public static String passHash(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException{
