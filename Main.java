@@ -179,20 +179,20 @@ public class Main {
 			stmt.execute("insert into TEACHERS values ('105','G.Mason','L5', '"+passHash("mason")+"', 4)");
 
 
-			stmt.execute("insert into CLASSES values (100, 101,'Math')");
-			stmt.execute("insert into CLASSES values (200, 102,'English')");
-			stmt.execute("insert into CLASSES values (300, 103,'History')");
-			stmt.execute("insert into CLASSES values (400, 104,'Spanish')");
-			stmt.execute("insert into CLASSES values (500, 105,'Science')");
+			stmt.execute("insert into CLASSES values ('M100', '101','Math')");
+			stmt.execute("insert into CLASSES values ('E200', '102','English')");
+			stmt.execute("insert into CLASSES values ('H300', '103','History')");
+			stmt.execute("insert into CLASSES values ('ES400', '104','Spanish')");
+			stmt.execute("insert into CLASSES values ('SC500', '105','Science')");
 			
-			stmt.execute("insert into ClassList values (100, 0418)");
-			stmt.execute("insert into ClassList values (100, 1234)");
-			stmt.execute("insert into ClassList values (102, 0418)");
-			stmt.execute("insert into ClassList values (103, 1234)");
-			stmt.execute("insert into ClassList values (104, 0671)");
-			stmt.execute("insert into ClassList values (102, 1234)");
-			stmt.execute("insert into ClassList values (101, 3726)");
-			stmt.execute("insert into ClassList values (105, 4829)");
+			stmt.execute("insert into ClassList values ('M100', '0418')");
+			stmt.execute("insert into ClassList values ('M100', '1234')");
+			stmt.execute("insert into ClassList values ('E200', '0418')");
+			stmt.execute("insert into ClassList values ('H300', '1234')");
+			stmt.execute("insert into ClassList values ('H300', '0671')");
+			stmt.execute("insert into ClassList values ('E200', '1234')");
+			stmt.execute("insert into ClassList values ('SC500', '3726')");
+			stmt.execute("insert into ClassList values ('SC500', '4829')");
 		
 		}catch(Exception e){
 	    	System.out.println("Data  already exists");
