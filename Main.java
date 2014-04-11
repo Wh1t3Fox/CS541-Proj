@@ -139,7 +139,7 @@ public class Main {
 				}
 			}else if(query.contains("INSERT")){
 				System.out.println("Current Query: " + query);
-				System.out.println("Into where? (NONE for no attributes): ");
+				System.out.println("Into where? (Ex. s_id,s_name NONE for no attributes): ");
 				String attributes = sc.nextLine();
 				
 				if(!attributes.contains("NONE")){
@@ -147,7 +147,7 @@ public class Main {
 					query += attributes;
 					query += ") VALUES (";
 					
-					System.out.println("their values?: ");
+					System.out.println("their values? (Ex. s_id = '1': ");
 					String values = sc.nextLine();
 					query += values;
 					query += ")";
@@ -167,6 +167,11 @@ public class Main {
 			}
 			
 			System.out.println("Final Query: " + query);
+			if(query.contains("SELECT")){
+				//Reading Data
+			}else{
+				//Writing Data
+			}
 			
 		}
 			
