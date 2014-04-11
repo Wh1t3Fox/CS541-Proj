@@ -80,7 +80,13 @@ public class Main {
         	ResultSet result = preState.executeQuery();       	
         	
         	if(result.next()){
-        		authenticatedUser(result.getString("s_name"));
+        		String name;
+        		try{
+        			name = result.getString("s_name");
+        		}catch(Exception e){
+        			name = result.getString("t_name");
+        		}
+        		authenticatedUser(name);
         	}
         	else{
         		System.out.println("Invalid Login!");
@@ -99,6 +105,7 @@ public class Main {
 	
 	public static void authenticatedUser(String name){
 		System.out.println("Hello, " + name);
+		
 		
 		
 	}
