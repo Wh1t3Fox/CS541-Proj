@@ -89,7 +89,8 @@ public class Main {
         		
         		        		
         		if(passwd.equals(passHash(input_passwd))){
-        			authenticatedUser(name);
+        			System.out.println("Hello, " + name);
+        			authenticatedUser();
         		}
         	
         		
@@ -109,24 +110,63 @@ public class Main {
 	    }
 	}
 	
-	public static void authenticatedUser(String name){
+	public static void authenticatedUser(){
 		String command, tableName;
-		System.out.println("Hello, " + name);
+		Scanner sc = new Scanner( System.in );
 		
 		while(true){
-			command = actionMenu();
-			if(command.equals("INVALID")){
-				System.out.println("INVALID COMMAND");
-				command = actionMenu();
+			String query = "";
+			
+			query += actionMenu();
+			if(query.contains("INVALID")){
+				System.out.println("INVALID QUERY");
+				authenticatedUser();
+			}
+			query += tableMenu();
+			if(query.contains("INVALID")){
+				System.out.println("INVALID QUERY");
+				authenticatedUser();
+			}
+						
+			if(query.contains("SELECT")){
+				System.out.println("Current Query: " + query);
+				System.out.println("From where? (NONE for no WHERE): ");
+				String predicate = sc.nextLine();
+				
+				if(!predicate.contains("NONE")){
+					query += " WHERE ";
+					query += predicate;
+				}
+			}else if(query.contains("INSERT")){
+				System.out.println("Current Query: " + query);
+				System.out.println("Into where? (NONE for no attributes): ");
+				String attributes = sc.nextLine();
+				
+				if(!attributes.contains("NONE")){
+					query += " (";
+					query += attributes;
+					query += ") VALUES (";
+					
+					System.out.println("their values?: ");
+					String values = sc.nextLine();
+					query += values;
+					query += ")";
+					
+				}
+				
+			}else if(query.contains("UPDATE")){
+				query += " SET ";
+				System.out.println("Current Query: " + query);
+				System.out.println("Set What?: ");
+				String predicate = sc.nextLine();
+				query += predicate;
+				query += " WHERE ";
+				System.out.println("Where what?: ");
+				String where = sc.nextLine();
+				query += where;
 			}
 			
-			tableName = tableMenu();
-			if(tableName.equals("INVALID")){
-				System.out.println("INVALID COMMAND");
-				command = tableMenu();
-			}
-			
-			
+			System.out.println("Final Query: " + query);
 			
 		}
 			
@@ -144,11 +184,11 @@ public class Main {
 			case "1":
 				System.out.print("What do you want to select? (Ex: *, s_name, t_name): ");
 				tableAttribute = sc.next();
-				return "SELECT " + tableAttribute;
+				return "SELECT " + tableAttribute + " FROM ";
 			case "2":
-				return "INSERT";
+				return "INSERT INTO ";
 			case "3":
-				return "UPDATE";
+				return "UPDATE ";
 			default:
 				return "INVALID";
 		}
@@ -162,15 +202,15 @@ public class Main {
 		
 		switch(command){
 			case "1":
-				return "TEACHERS";
+				return " TEACHERS ";
 			case "2":
-				return "STUDENTS";
+				return " STUDENTS ";
 			case "3":
-				return "CLASSES";
+				return " CLASSES ";
 			case "4":
-				return "CLASSLIST";
+				return " CLASSLIST ";
 			default:
-				return "INVALID";
+				return " INVALID ";
 		}
 	}
 	
