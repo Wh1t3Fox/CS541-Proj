@@ -104,11 +104,40 @@ public class Main {
 	}
 	
 	public static void authenticatedUser(String name){
+		String command;
 		System.out.println("Hello, " + name);
 		
-		
+		while(true){
+			command = actionMenu();
+			if(command.equals("INVALID")){
+				System.out.println("INVALID COMMAND");
+				command = actionMenu();
+			}
+		}
+			
 		
 	}
+	
+	
+	public static String actionMenu(){
+		String command = "";
+		Scanner sc = new Scanner( System.in );
+		System.out.println("Choose Your Action:\n1. Select\n2. Insert\n3. Update");
+		command = sc.next();
+		
+		switch(command){
+			case "1":
+				return "SELECT";
+			case "2":
+				return "INSERT";
+			case "3":
+				return "UPDATE";
+			default:
+				return "INVALID";
+		}
+	}
+	
+	
 	
 	public static String passHash(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException{
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
