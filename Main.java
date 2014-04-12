@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -110,8 +111,9 @@ public class Main {
 	    }
 	}
 	
-	public static void authenticatedUser(){
+	public static void authenticatedUser() throws IOException{
 		String command, tableName;
+		PreparedStatement preState;
 		Scanner sc = new Scanner( System.in );
 		
 		while(true){
@@ -172,7 +174,7 @@ public class Main {
 				//If using Ring Policy
 				if(BibaMode.equals("Ring")){
 					//Allow Reading to all Data
-				
+					
 				//Strict and Watermark Policy
 				}else{
 					//Only allow reading with integrity = or >
@@ -191,6 +193,20 @@ public class Main {
 				}
 			}
 			
+			try {
+				preState = conn.prepareStatement(query);
+				
+	        	ResultSet result = preState.executeQuery();
+				while(result.next()){
+					System.out.println(result.getString(1));
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("Press any key to continue...");
+			System.in.read();
 		}
 			
 		
