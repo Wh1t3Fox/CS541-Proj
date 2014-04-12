@@ -198,6 +198,8 @@ public class Main {
 				
 	        	ResultSet result = preState.executeQuery();
 				while(result.next()){
+					String[] aQuery = query.split("\\s+");
+					System.out.println(aQuery[1]);
 					System.out.println(result.getString(1));
 				}
 				
