@@ -177,7 +177,7 @@ public class Main {
 				if(integrityResult.next()){
 					objectIntegrity = integrityResult.getInt("integrity_value");
 				}
-								
+				getInteg.close();
 				
 				System.out.printf("\n\nObject Integrity: %d\nSubject Integrity: %d\n\n", objectIntegrity, integrityValue);
 				
@@ -205,6 +205,7 @@ public class Main {
 							updateInteg.setInt(1, integrityValue);
 							updateInteg.setString(2, tableName.replaceAll("\\s+",""));
 							updateInteg.executeUpdate();
+							updateInteg.close();
 						}
 						
 						//Strict and Ring policy
@@ -226,6 +227,7 @@ public class Main {
 						addInteg.setString(1, id);
 						addInteg.setInt(2, integrity);
 						addInteg.executeUpdate();
+						addInteg.close();
 					}
 				}
 				clearConsole();
@@ -233,14 +235,30 @@ public class Main {
 				preState = conn.prepareStatement(query);
 				
 	        	if(query.contains("SELECT")){
+	        		String[] attributes = aQuery[1].split(",");
 	        		ResultSet result = preState.executeQuery();
+	        		for(String a: attributes){
+	        			System.out.print(a);
+	        			System.out.print("\t");
+	        		}
+	        		System.out.print("\n");
+	        		for(int i=0; i<attributes.length;i++){
+	        			System.out.print("----");
+	        			System.out.print("\t");
+	        		}
+	        		System.out.print("\n");
 	        		while(result.next()){
-	        			System.out.println(result.getString(1));
+	        			for(int j=1;j<=attributes.length; j++){
+	        				System.out.print(result.getString(j));
+	        				System.out.print("\t");
+	        			}
+	        			System.out.print("\n");
+	        				
 	        		}
 	        	}else{
 	        		preState.executeUpdate();
 	        	}
-				
+	        	preState.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}finally{
