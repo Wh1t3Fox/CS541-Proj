@@ -23,6 +23,8 @@ public class Main {
 		String input_passwd = "";
 		Properties props;
 		final String url = "jdbc:oracle:thin:@claros.cs.purdue.edu:1524:strep";
+		final String username = "";
+		final String password = "";
 		PreparedStatement preState;
 		
 		@SuppressWarnings("resource")
@@ -59,8 +61,8 @@ public class Main {
 	    try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			props = new Properties();
-		    props.setProperty("user", "");
-		    props.setProperty("password", "");
+		    props.setProperty("user", username);
+		    props.setProperty("password", password);
 		     
 		    conn = DriverManager.getConnection(url,props);
 		    
@@ -235,8 +237,22 @@ public class Main {
 				preState = conn.prepareStatement(query);
 				
 	        	if(query.contains("SELECT")){
-	        		String[] attributes = aQuery[1].split(",");
+	        		String[] attributes = new String[5];
 	        		ResultSet result = preState.executeQuery();
+	        		if(!aQuery[1].contains("*")){
+	        			attributes = aQuery[1].split(",");
+	        		}else{
+	        			if(query.contains("STUDENTS")){
+	        				attributes = new String[]{"s_id","s_name","gpa","s_pwrd","integrity_value"};
+	        			}else if(query.contains("TEACHERS")){
+	        				attributes = new String[]{"t_id","t_name","office","t_pwrd","integrity_value"};
+	        			}else if(query.contains("CLASSES")){
+	        				attributes = new String[]{"c_id","t_id","subject"};
+	        			}else if(query.contains("CLASSLIST")){
+	        				attributes = new String[]{"c_id","s_id"};
+	        			}
+	        		}
+	        		
 	        		for(String a: attributes){
 	        			System.out.print(a);
 	        			System.out.print("\t");
@@ -244,17 +260,18 @@ public class Main {
 	        		System.out.print("\n");
 	        		for(int i=0; i<attributes.length;i++){
 	        			System.out.print("----");
-	        			System.out.print("\t");
+	        			System.out.print("\t\t");
 	        		}
 	        		System.out.print("\n");
-	        		while(result.next()){
-	        			for(int j=1;j<=attributes.length; j++){
-	        				System.out.print(result.getString(j));
-	        				System.out.print("\t");
-	        			}
-	        			System.out.print("\n");
-	        				
+	        		
+	        	while(result.next()){
+	        		for(int j=1;j<=attributes.length; j++){
+	        			System.out.print(result.getString(j));
+	        			System.out.print("\t\t");
 	        		}
+	        		System.out.print("\n");
+	        				
+	        	}
 	        	}else{
 	        		preState.executeUpdate();
 	        	}
