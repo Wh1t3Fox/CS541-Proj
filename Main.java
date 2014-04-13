@@ -148,27 +148,19 @@ public class Main {
 				}
 			}else if(query.contains("INSERT")){
 				System.out.println("Current Query: " + query);
-				System.out.println("Into where? (Ex. s_id,s_name NONE for all attributes): ");
-				String attributes = sc.nextLine();
-				
-				if(!attributes.contains("NONE")){
-					query += " (";
-					query += attributes;
-					query += ")";
-				}
 				query += " VALUES (";
-				System.out.println("their values? (Ex. '1': ");
+				System.out.println("Values of attributes: (Ex. '1','b',3: ");
 				String values = sc.nextLine();
 				query += values;
 				query += ")";
 			}else if(query.contains("UPDATE")){
 				query += " SET ";
 				System.out.println("Current Query: " + query);
-				System.out.println("Set What?: ");
+				System.out.println("Set What? (Ex. s_name = 'b'): ");
 				String predicate = sc.nextLine();
 				query += predicate;
 				query += " WHERE ";
-				System.out.println("Where what?: ");
+				System.out.println("Where what? (Ex. s_id = '1': ");
 				String where = sc.nextLine();
 				query += where;
 			}
@@ -185,6 +177,9 @@ public class Main {
 					objectIntegrity = integrityResult.getInt("integrity_value");
 				}
 								
+				
+				System.out.printf("\n\nObject Integrity: %d\nSubject Integrity: %d\n\n", objectIntegrity, integrityValue);
+				
 	        	//Select Statements aka Reading
 				if(query.contains("SELECT")){
 					//Strict and Watermark Policy
@@ -223,18 +218,21 @@ public class Main {
 			
 				preState = conn.prepareStatement(query);
 				
-	        	ResultSet result = preState.executeQuery();
-				while(result.next()){
-					System.out.println(result.getString(1));
-				}
+	        	if(query.contains("SELECT")){
+	        		ResultSet result = preState.executeQuery();
+	        		while(result.next()){
+	        			System.out.println(result.getString(1));
+	        		}
+	        	}else{
+	        		preState.executeUpdate();
+	        	}
 				
 			} catch (SQLException e) {
-				System.out.println("You submitted an invalid query");
-				authenticatedUser();
+				e.printStackTrace();
+			}finally{
+				System.out.println("Press any key to continue...");
+				System.in.read();
 			}
-			
-			System.out.println("Press any key to continue...");
-			System.in.read();
 		}
 			
 		
