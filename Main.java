@@ -205,7 +205,11 @@ public class Main {
 					if(BibaMode.equals("Watermark")){
 						//Write to all but lower integrity if writing up
 						if(objectIntegrity >= integrityValue){
-							
+							String updateIntegrityLevel = "UPDATE INTEGRITY SET integrity_level = ? WHERE identity = ?";
+							preState = conn.prepareStatement(updateIntegrityLevel);
+				        	preState.setInt(1, integrityValue);
+				        	preState.setString(2, tableName.replaceAll("\\s+",""));
+				        	preState.executeQuery();
 						}
 						
 						//Strict and Ring policy
@@ -227,7 +231,8 @@ public class Main {
 				}
 				
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println("You submitted an invalid query");
+				authenticatedUser();
 			}
 			
 			System.out.println("Press any key to continue...");
