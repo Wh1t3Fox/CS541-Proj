@@ -148,21 +148,19 @@ public class Main {
 				}
 			}else if(query.contains("INSERT")){
 				System.out.println("Current Query: " + query);
-				System.out.println("Into where? (Ex. s_id,s_name NONE for no attributes): ");
+				System.out.println("Into where? (Ex. s_id,s_name NONE for all attributes): ");
 				String attributes = sc.nextLine();
 				
 				if(!attributes.contains("NONE")){
 					query += " (";
 					query += attributes;
-					query += ") VALUES (";
-					
-					System.out.println("their values? (Ex. s_id = '1': ");
-					String values = sc.nextLine();
-					query += values;
 					query += ")";
-					
 				}
-				
+				query += " VALUES (";
+				System.out.println("their values? (Ex. '1': ");
+				String values = sc.nextLine();
+				query += values;
+				query += ")";
 			}else if(query.contains("UPDATE")){
 				query += " SET ";
 				System.out.println("Current Query: " + query);
