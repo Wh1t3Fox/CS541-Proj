@@ -255,23 +255,24 @@ public class Main {
 	        		
 	        		for(String a: attributes){
 	        			System.out.print(a);
-	        			System.out.print("\t");
+	        			System.out.print("\t\t");
 	        		}
 	        		System.out.print("\n");
 	        		for(int i=0; i<attributes.length;i++){
-	        			System.out.print("----");
+	        			for(int j=0; j<attributes[i].length(); j++)
+	        				System.out.print("-");
 	        			System.out.print("\t\t");
 	        		}
 	        		System.out.print("\n");
 	        		
-	        	while(result.next()){
-	        		for(int j=1;j<=attributes.length; j++){
-	        			System.out.print(result.getString(j));
-	        			System.out.print("\t\t");
-	        		}
-	        		System.out.print("\n");
+	        		while(result.next()){
+	        			for(int j=1;j<=attributes.length; j++){
+	        				System.out.print(result.getString(j));
+	        				System.out.print("\t\t");
+	        			}
+	        			System.out.print("\n");
 	        				
-	        	}
+	        		}
 	        	}else{
 	        		preState.executeUpdate();
 	        	}
