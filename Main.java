@@ -169,10 +169,11 @@ public class Main {
 			String[] aQuery = query.split("\\s+");
 			try {
 				String integrtiyQuery = "SELECT integrity_value FROM INTEGRITY WHERE identity = ?";
-				preState = conn.prepareStatement(integrtiyQuery);
-	        	preState.setString(1, tableName.replaceAll("\\s+",""));
+				PreparedStatement getInteg = conn.prepareStatement(integrtiyQuery);
+				getInteg = conn.prepareStatement(integrtiyQuery);
+				getInteg.setString(1, tableName.replaceAll("\\s+",""));
 	        
-	        	ResultSet integrityResult = preState.executeQuery();
+	        	ResultSet integrityResult = getInteg.executeQuery();
 				if(integrityResult.next()){
 					objectIntegrity = integrityResult.getInt("integrity_value");
 				}
@@ -194,15 +195,16 @@ public class Main {
 					
 				//Insert and Update Statements aka Writing
 				}else{
+					
 					//Watermark Policy
 					if(BibaMode.equals("Watermark")){
 						//Write to all but lower integrity if writing up
 						if(objectIntegrity >= integrityValue){
 							String updateIntegrityLevel = "UPDATE INTEGRITY SET integrity_level = ? WHERE identity = ?";
-							preState = conn.prepareStatement(updateIntegrityLevel);
-				        	preState.setInt(1, integrityValue);
-				        	preState.setString(2, tableName.replaceAll("\\s+",""));
-				        	preState.executeQuery();
+							PreparedStatement updateInteg = conn.prepareStatement(updateIntegrityLevel);
+							updateInteg.setInt(1, integrityValue);
+							updateInteg.setString(2, tableName.replaceAll("\\s+",""));
+							updateInteg.executeUpdate();
 						}
 						
 						//Strict and Ring policy
@@ -212,6 +214,18 @@ public class Main {
 							System.out.println("You do not have permission to execute this.");
 							authenticatedUser();
 						}
+					}
+					//Add entry to integrity table before inserting in students or teachers
+					if(query.contains("INSERT") && (query.contains("STUDENTS") || tableName.contains("TEACHERS"))){
+						String[] parse = query.split(",");
+						String id = parse[0].split("\\s+")[4].replace("(", "").replace("\'", "");
+						int integrity = Integer.parseInt(parse[parse.length-1].replace(")", "").replace(" ", ""));
+												
+						String insertIntegrity = "INSERT INTO Integrity VALUES (?,?)";
+						PreparedStatement addInteg = conn.prepareStatement(insertIntegrity);
+						addInteg.setString(1, id);
+						addInteg.setInt(2, integrity);
+						addInteg.executeUpdate();
 					}
 				}
 				clearConsole();
