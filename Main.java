@@ -112,11 +112,13 @@ public class Main {
 	}
 	
 	public static void authenticatedUser() throws IOException{
-		String command, tableName;
+		String command = "", tableName;
+		int objectIntegrity = 0;
 		PreparedStatement preState;
 		Scanner sc = new Scanner( System.in );
 		
 		while(true){
+			clearConsole();
 			String query = "";
 			
 			query += actionMenu();
@@ -124,12 +126,17 @@ public class Main {
 				System.out.println("INVALID QUERY");
 				authenticatedUser();
 			}
-			query += tableMenu();
+			
+			clearConsole();
+			
+			tableName = tableMenu();
 			if(query.contains("INVALID")){
 				System.out.println("INVALID QUERY");
 				authenticatedUser();
 			}
-						
+			query += tableName;
+			clearConsole();
+			
 			if(query.contains("SELECT")){
 				System.out.println("Current Query: " + query);
 				System.out.println("From where? (NONE for no WHERE): ");
@@ -167,39 +174,55 @@ public class Main {
 				String where = sc.nextLine();
 				query += where;
 			}
-			
+			clearConsole();
 			System.out.println("Final Query: " + query);
-			//Select Statements aka Reading
-			if(query.contains("SELECT")){
-				//If using Ring Policy
-				if(BibaMode.equals("Ring")){
-					//Allow Reading to all Data
-					
-				//Strict and Watermark Policy
-				}else{
-					//Only allow reading with integrity = or >
-					
-				}
-			//Insert and Update Statements aka Writing
-			}else{
-				//Watermark Policy
-				if(BibaMode.equals("Watermark")){
-					//Write to all but lower integrity if writing up
-					
-				//Strict and Ring policy
-				}else{
-					//Only allow writing down
-					
-				}
-			}
-			
+			String[] aQuery = query.split("\\s+");
 			try {
+				String integrtiyQuery = "SELECT integrity_value FROM INTEGRITY WHERE identity = ?";
+				preState = conn.prepareStatement(integrtiyQuery);
+	        	preState.setString(1, tableName.replaceAll("\\s+",""));
+	        
+	        	ResultSet integrityResult = preState.executeQuery();
+				if(integrityResult.next()){
+					objectIntegrity = integrityResult.getInt("integrity_value");
+				}
+								
+	        	//Select Statements aka Reading
+				if(query.contains("SELECT")){
+					//Strict and Watermark Policy
+					if(!BibaMode.equals("Ring")){
+						//if we are in watermark or stric don't allow reading down
+						if(objectIntegrity < integrityValue){
+							System.out.println("You do not have permission to execute this.");
+							authenticatedUser();
+						}
+					}
+					//Ring can read anything
+					
+				//Insert and Update Statements aka Writing
+				}else{
+					//Watermark Policy
+					if(BibaMode.equals("Watermark")){
+						//Write to all but lower integrity if writing up
+						if(objectIntegrity >= integrityValue){
+							
+						}
+						
+						//Strict and Ring policy
+					}else{
+						//if writing up don't allow and exit on strict and ring
+						if(objectIntegrity > integrityValue){
+							System.out.println("You do not have permission to execute this.");
+							authenticatedUser();
+						}
+					}
+				}
+				clearConsole();
+			
 				preState = conn.prepareStatement(query);
 				
 	        	ResultSet result = preState.executeQuery();
 				while(result.next()){
-					String[] aQuery = query.split("\\s+");
-					System.out.println(aQuery[1]);
 					System.out.println(result.getString(1));
 				}
 				
@@ -371,6 +394,27 @@ public class Main {
 		
 		}catch(Exception e){
 	    	System.out.println("No Data to Remove");
+	    }
+	}
+	
+	public final static void clearConsole()
+	{
+	    try
+	    {
+	        final String os = System.getProperty("os.name");
+
+	        if (os.contains("Windows"))
+	        {
+	            Runtime.getRuntime().exec("cls");
+	        }
+	        else
+	        {
+	            Runtime.getRuntime().exec("clear");
+	        }
+	    }
+	    catch (final Exception e)
+	    {
+	        //  Handle any exceptions.
 	    }
 	}
 }
