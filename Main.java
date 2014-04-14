@@ -16,7 +16,7 @@ public class Main {
 	private static Connection conn;
 	private static String input_sid, user_type;
 	private static int integrityValue = 0;
-	private static final String BibaMode = "Strict";
+	private static final String BibaMode = "WATERMARK"; //RING, WATERMARK, STRICT
 	
 	public static void main(String args[]) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException {
 	
@@ -113,7 +113,7 @@ public class Main {
 	    }
 	}
 	
-	public static void authenticatedUser() throws IOException{
+	public static void authenticatedUser() throws IOException, NoSuchAlgorithmException{
 		String command = "", tableName;
 		int objectIntegrity = 0;
 		PreparedStatement preState;
@@ -186,7 +186,7 @@ public class Main {
 	        	//Select Statements aka Reading
 				if(query.contains("SELECT")){
 					//Strict and Watermark Policy
-					if(!BibaMode.equals("Ring")){
+					if(!BibaMode.equalsIgnoreCase("RING")){
 						//if we are in watermark or stric don't allow reading down
 						if(objectIntegrity < integrityValue){
 							System.out.println("You do not have permission to execute this.");
@@ -199,10 +199,10 @@ public class Main {
 				}else{
 					
 					//Watermark Policy
-					if(BibaMode.equals("Watermark")){
+					if(BibaMode.equalsIgnoreCase("WATERMARK")){
 						//Write to all but lower integrity if writing up
 						if(objectIntegrity >= integrityValue){
-							String updateIntegrityLevel = "UPDATE INTEGRITY SET integrity_level = ? WHERE identity = ?";
+							String updateIntegrityLevel = "UPDATE INTEGRITY SET integrity_value = ? WHERE identity = ?";
 							PreparedStatement updateInteg = conn.prepareStatement(updateIntegrityLevel);
 							updateInteg.setInt(1, integrityValue);
 							updateInteg.setString(2, tableName.replaceAll("\\s+",""));
@@ -274,11 +274,66 @@ public class Main {
 	        				
 	        		}
 	        	}else{
-	        		preState.executeUpdate();
-	        	}
+	        		if(query.contains("INSERT")){
+	        			PreparedStatement insertStatement = null;
+	        			String newQuery = "";
+	        			
+	        			String[] values = query.substring(query.indexOf("(")).replace("(", "").replace(")","").replace("\'", "").replace("\\s+", "").split(",");
+	        			
+	        			if(query.contains("STUDENTS")){
+	        				newQuery = "INSERT INTO STUDENTS VALUES (?,?,?,?,?)";
+	        				insertStatement= conn.prepareStatement(newQuery);
+	        				insertStatement.setString(1, values[0]);
+	        				insertStatement.setString(2, values[1]);
+	        				insertStatement.setFloat(3, Float.valueOf(values[2]));
+	        				insertStatement.setString(4, passHash(values[3]));
+	        				insertStatement.setInt(5, Integer.parseInt(values[4]));
+	        			}else if(query.contains("TEACHERS")){
+	        				newQuery = "INSERT INTO TEACHERS VALUES (?,?,?,?,?)";
+	        				insertStatement= conn.prepareStatement(newQuery);
+	        				insertStatement.setString(1, values[0]);
+	        				insertStatement.setString(2, values[1]);
+	        				insertStatement.setString(3, values[2]);
+	        				insertStatement.setString(4, passHash(values[3]));
+	        				insertStatement.setInt(5, Integer.parseInt(values[4]));
+	        			}else if(query.contains("CLASSES")){
+	        				newQuery = "INSERT INTO CLASSES VALUES (?,?,?)";
+	        				insertStatement= conn.prepareStatement(newQuery);
+	        				insertStatement.setString(1, values[0]);
+	        				insertStatement.setString(2, values[1]);
+	        				insertStatement.setString(3, values[2]);
+	        			}else if(query.contains("CLASSLIST")){
+	        				newQuery = "INSERT INTO CLASSLIST VALUES (?,?)";
+	        				insertStatement= conn.prepareStatement(newQuery);
+	        				insertStatement.setString(1, values[0]);
+	        				insertStatement.setString(2, values[1]);
+	        			}
+	        			
+	        			insertStatement.executeUpdate();
+	        		}else{
+	        			preState.executeUpdate();
+	        		}
+	        		
+	           	}
 	        	preState.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				
+				if(query.contains("INSERT")){
+					String id = query.split(",")[0].split("\\s+")[4].replace("(", "").replace("\'", "");
+					String insertIntegrity = "DELETE FROM Integrity WHERE identity = ?";
+					PreparedStatement delInteg;
+					try {
+						delInteg = conn.prepareStatement(insertIntegrity);
+						delInteg.setString(1, id);
+						delInteg.executeUpdate();
+						delInteg.close();
+					
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}finally{
 				System.out.println("Press any key to continue...");
 				System.in.read();
