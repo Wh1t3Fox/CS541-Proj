@@ -332,9 +332,7 @@ public class Main {
 	        			}
 	        			nQuery = nQuery.substring(0, nQuery.length()-2);
 	        			nQuery += " WHERE " + aTmp[aTmp.length-1].split("=")[0] + " = ?";
-	        			
-	        			System.out.println(nQuery);
-	        			
+	        				        			
 	        			updateStatement = conn.prepareStatement(nQuery);
 	        			for(int j=1; j<=updateItems.length; j++){
 	        				if(updateItems[j-1].equalsIgnoreCase("GPA")){
@@ -350,11 +348,11 @@ public class Main {
 	        			updateStatement.executeUpdate();
 	        			
 	        		}
-	        		System.out.println("Query Successful");
+	        		System.out.println("SUCCESSFUL QUERY");
 	           	}
 	        	
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println("INCORRECT QUERY");
 				
 				if(query.contains("INSERT")){
 					String id = query.split(",")[0].split("\\s+")[4].replace("(", "").replace("\'", "");
