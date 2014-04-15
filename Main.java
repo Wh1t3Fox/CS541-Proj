@@ -16,7 +16,7 @@ public class Main {
 	private static Connection conn;
 	private static String input_sid, user_type;
 	private static int integrityValue = 0;
-	private static final String BibaMode = "WATERMARK"; //RING, WATERMARK, STRICT
+	private static final String BibaMode = "RING"; //RING, WATERMARK, STRICT
 	
 	public static void main(String args[]) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException {
 	
@@ -181,7 +181,6 @@ public class Main {
 				}
 				getInteg.close();
 				
-				System.out.printf("\n\nObject Integrity: %d\nSubject Integrity: %d\n\n", objectIntegrity, integrityValue);
 				
 	        	//Select Statements aka Reading
 				if(query.contains("SELECT")){
@@ -234,10 +233,11 @@ public class Main {
 				}
 				clearConsole();
 			
-				preState = conn.prepareStatement(query);
+				
 				
 	        	if(query.contains("SELECT")){
 	        		String[] attributes = new String[5];
+	        		preState = conn.prepareStatement(query);
 	        		ResultSet result = preState.executeQuery();
 	        		if(!aQuery[1].contains("*")){
 	        			attributes = aQuery[1].split(",");
@@ -273,6 +273,7 @@ public class Main {
 	        			System.out.print("\n");
 	        				
 	        		}
+	        		preState.close();
 	        	}else{
 	        		if(query.contains("INSERT")){
 	        			PreparedStatement insertStatement = null;
@@ -311,11 +312,47 @@ public class Main {
 	        			
 	        			insertStatement.executeUpdate();
 	        		}else{
-	        			preState.executeUpdate();
+	        			PreparedStatement updateStatement = null;
+	        			String nQuery = "UPDATE " + tableName.replaceAll("\\s+", "") + " SET ";
+	        			String[] aTmp = query.substring(21).replaceAll("[\\s+|\"|\']", "").split("WHERE|,");
+	        			String[] updateItems  = new String[aTmp.length];
+	        			String[] updateValues = new String[aTmp.length];
+	        			
+	        			for(int i=0; i<aTmp.length; i++){
+	        				String[] values = aTmp[i].split("=");
+	        				updateItems[i] = values[0];
+	        				updateValues[i] = values[1];
+	        			}
+	        			for(int i=0; i<aTmp.length-1; i++){
+	        				
+	        				String[] values = aTmp[i].split("=");
+
+	        				nQuery += values[0] + " = ?, ";
+	        				
+	        			}
+	        			nQuery = nQuery.substring(0, nQuery.length()-2);
+	        			nQuery += " WHERE " + aTmp[aTmp.length-1].split("=")[0] + " = ?";
+	        			
+	        			System.out.println(nQuery);
+	        			
+	        			updateStatement = conn.prepareStatement(nQuery);
+	        			for(int j=1; j<=updateItems.length; j++){
+	        				if(updateItems[j-1].equalsIgnoreCase("GPA")){
+	        					updateStatement.setFloat(j, Float.valueOf(updateValues[j-1]));
+	        				}else if(updateItems[j-1].equalsIgnoreCase("integrity_value")){
+	        					updateStatement.setInt(j, Integer.parseInt(updateValues[j-1]));
+	        				}else if(updateItems[j-1].contains("pwrd")){
+	        					updateStatement.setString(j, passHash(updateValues[j-1]));
+	        				}else{
+	        					updateStatement.setString(j, updateValues[j-1]);
+	        				}
+	        			}
+	        			updateStatement.executeUpdate();
+	        			
 	        		}
-	        		
+	        		System.out.println("Query Successful");
 	           	}
-	        	preState.close();
+	        	
 			} catch (SQLException e) {
 				e.printStackTrace();
 				
@@ -483,7 +520,8 @@ public class Main {
 			stmt.execute("insert into ClassList values ('SC500', '4829')");
 		
 		}catch(Exception e){
-	    	System.out.println("Data  already exists");
+			e.printStackTrace();
+	    	//System.out.println("Data  already exists");
 	    }
 	}
 	
@@ -499,7 +537,8 @@ public class Main {
 			stmt.executeQuery("Drop table ClassList cascade constraints");
 		
 		}catch(Exception e){
-	    	System.out.println("No Data to Remove");
+			e.printStackTrace();
+	    	//System.out.println("No Data to Remove");
 	    }
 	}
 	
