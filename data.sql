@@ -79,4 +79,4 @@ insert into ClassList values ('H300', '1234');
 insert into ClassList values ('H300', '0671');
 insert into ClassList values ('E200', '1234');
 insert into ClassList values ('SC500', '3726');
-			insert into ClassList values ('SC500', '4829');
+insert into ClassList values ('SC500', '4829');
