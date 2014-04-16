@@ -24,10 +24,12 @@ The following should be done in the main.java code
 II. COMPILING THE CODE
 
 IDE
+
 1. Import project
 2. Add the ojdbc14.jar file to the library
 
 COMMAND LINE
+
 1. Type the command javac -cp /path/to/jar/file Main.java
 and replace /path/to/jar/ with the path to the ojdbc jar file 
 
