@@ -39,32 +39,32 @@ CREATE TABLE ClassList(
 	s_id VARCHAR(15),
 	CONSTRAINT pk_classlist PRIMARY KEY(c_id, s_id));
 						
-insert into Integrity values ('ClassList', 4);
-insert into Integrity values ('CLASSES', 5);
+insert into Integrity values ('ClassList', 5);
+insert into Integrity values ('CLASSES', 4);
 insert into Integrity values ('TEACHERS', 5);
-insert into Integrity values ('STUDENTS', 4);
-insert into Integrity values ('0418', 5);
-insert into Integrity values ('0671', 5);
-insert into Integrity values ('1234', 5);
-insert into Integrity values ('3726', 5);
-insert into Integrity values ('4829', 5);
+insert into Integrity values ('STUDENTS', 3);
+insert into Integrity values ('0418', 3);
+insert into Integrity values ('0671', 3);
+insert into Integrity values ('1234', 3);
+insert into Integrity values ('3726', 3);
+insert into Integrity values ('4829', 3);
 insert into Integrity values ('101', 5);
 insert into Integrity values ('102', 5);
 insert into Integrity values ('103', 5);
 insert into Integrity values ('104', 5);
 insert into Integrity values ('105', 5);
 			
-insert into STUDENTS values ('0418','S.Jack',3.5,'"+passHash("jack")+"', 5);
-insert into STUDENTS values ('0671','A.Smith',2.9,'"+passHash("smith")+"', 5);
-insert into STUDENTS values ('1234','T.Banks',4.0,'"+passHash("banks")+"', 5);
-insert into STUDENTS values ('3726','M.Lee',3.2,'"+passHash("lee")+"', 5);
-insert into STUDENTS values ('4829','J.Bale',3.0,'"+passHash("bale")+"', 5);
+insert into STUDENTS values ('0418','S.Jack',3.5,'"+passHash("jack")+"', 3);
+insert into STUDENTS values ('0671','A.Smith',2.9,'"+passHash("smith")+"', 3);
+insert into STUDENTS values ('1234','T.Banks',4.0,'"+passHash("banks")+"', 3);
+insert into STUDENTS values ('3726','M.Lee',3.2,'"+passHash("lee")+"', 3);
+insert into STUDENTS values ('4829','J.Bale',3.0,'"+passHash("bale")+"', 3);
 
-insert into TEACHERS values ('101','S.Layton','L1', '"+passHash("layton")+"', 4);
-insert into TEACHERS values ('102','B.Jungles','L2', '"+passHash("jungles")+"', 4);
-insert into TEACHERS values ('103','N.Guzaldo','L3', '"+passHash("guzaldo")+"', 4);
-insert into TEACHERS values ('104','S.Boling','L4', '"+passHash("boling")+"', 4);
-insert into TEACHERS values ('105','G.Mason','L5', '"+passHash("mason")+"', 4);
+insert into TEACHERS values ('101','S.Layton','L1', '"+passHash("layton")+"', 5);
+insert into TEACHERS values ('102','B.Jungles','L2', '"+passHash("jungles")+"', 5);
+insert into TEACHERS values ('103','N.Guzaldo','L3', '"+passHash("guzaldo")+"', 5);
+insert into TEACHERS values ('104','S.Boling','L4', '"+passHash("boling")+"', 5);
+insert into TEACHERS values ('105','G.Mason','L5', '"+passHash("mason")+"', 5);
 
 insert into CLASSES values ('M100', '101','Math');
 insert into CLASSES values ('E200', '102','English');
