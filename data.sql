@@ -54,11 +54,11 @@ insert into Integrity values ('103', 5);
 insert into Integrity values ('104', 5);
 insert into Integrity values ('105', 5);
 			
-insert into STUDENTS values ('0418','S.Jack',3.5,'"+passHash("jack")+"', 5);
-insert into STUDENTS values ('0671','A.Smith',2.9,'"+passHash("smith")+"', 5);
-insert into STUDENTS values ('1234','T.Banks',4.0,'"+passHash("banks")+"', 5);
-insert into STUDENTS values ('3726','M.Lee',3.2,'"+passHash("lee")+"', 5);
-insert into STUDENTS values ('4829','J.Bale',3.0,'"+passHash("bale")+"', 5);
+insert into STUDENTS values ('0418','S.Jack',3.5,'"+passHash("jack")+"', 3);
+insert into STUDENTS values ('0671','A.Smith',2.9,'"+passHash("smith")+"', 3);
+insert into STUDENTS values ('1234','T.Banks',4.0,'"+passHash("banks")+"', 3);
+insert into STUDENTS values ('3726','M.Lee',3.2,'"+passHash("lee")+"', 3);
+insert into STUDENTS values ('4829','J.Bale',3.0,'"+passHash("bale")+"', 3);
 
 insert into TEACHERS values ('101','S.Layton','L1', '"+passHash("layton")+"', 4);
 insert into TEACHERS values ('102','B.Jungles','L2', '"+passHash("jungles")+"', 4);
