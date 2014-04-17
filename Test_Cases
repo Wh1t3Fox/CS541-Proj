@@ -1,0 +1,65 @@
+Test Cases
+
+The test cases are structured according to the application as follows. Each of the following 
+input values should be entered into the application when prompted.
+
+Strict Policy Mode
+
+No Read Down:
+
+2
+101
+layton
+1
+*
+2
+NONE
+
+Select * From Students;
+
+
+No Write Up
+1
+0418
+jack
+3
+1
+t_name ='ME'
+t_id = '101'
+
+Update Teacher Set t_name ='ME' Where t_id = '101';
+
+
+Object Low-Watermark Mode
+
+1
+0418
+jack
+3
+1
+t_name ='ME'
+t_id = '101'
+
+Update Teacher Set t_name ='ME' Where t_id = '101';
+
+Press Enter 
+
+1
+*
+1
+NONE
+
+Select * From Teachers;
+
+
+Ring Policy Mode
+
+1
+0418
+jack
+3
+1
+t_name ='Change'
+t_id = '101'
+
+Update Teacher Set t_name ='ME' Where t_id = '101';
